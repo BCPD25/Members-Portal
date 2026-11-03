@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bomber County Pipes & Drums - Membership Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #070b12; color: #f3f4f6; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .bg-navy-dark { background-color: #0a111b; }
+        .bg-navy-card { background-color: #111c2e; }
+        .border-navy-border { border-color: #1e324c; }
+        .gold-gradient { background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%); }
+        .gold-text { background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+    <!-- Header -->
+    <header class="bg-navy-dark border-b border-navy-border sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-full bg-amber-600 flex items-center justify-center font-cinzel font-bold text-xl text-white border-2 border-amber-500 shadow-md">BC</div>
+                <div>
+                    <h1 class="font-cinzel text-lg sm:text-xl font-bold tracking-wider gold-text">Bomber County Pipes & Drums</h1>
+                    <p class="text-xs text-amber-200/70 tracking-widest uppercase">Official Membership Portal</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2 mt-2 sm:mt-0">
+                <button onclick="switchTab('register')" id="nav-register" class="px-4 py-2 text-sm font-semibold rounded-lg bg-amber-600 text-white shadow hover:bg-amber-500 transition cursor-pointer">Join / Renew</button>
+                <button onclick="switchTab('lookup')" id="nav-lookup" class="px-4 py-2 text-sm font-semibold rounded-lg bg-navy-card border border-navy-border hover:border-amber-500/50 transition cursor-pointer">My Card</button>
+                <button onclick="switchTab('admin')" id="nav-admin" class="px-4 py-2 text-sm font-semibold rounded-lg bg-navy-card border border-navy-border hover:border-amber-500/50 transition text-amber-300 cursor-pointer">Admin Portal</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-5xl mx-auto px-4 py-8 w-full">
+        
+        <!-- TAB 1: REGISTER / RENEW -->
+        <section id="tab-register" class="space-y-6">
+            <div class="bg-navy-card border border-navy-border rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="text-center max-w-xl mx-auto mb-8">
+                    <h2 class="font-cinzel text-2xl sm:text-3xl font-bold mb-2 gold-text">Annual Membership Application</h2>
+                    <p class="text-sm text-gray-300">Support Bomber County Pipes & Drums. Complete your details below to instantly calculate your fee, complete payment, and generate your digital membership card valid until <span class="text-amber-400 font-semibold">22/01/2027</span>.</p>
+                </div>
+
+                <!-- Fee Schedule Banner -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-navy-dark border border-navy-border p-4 rounded-xl text-center">
+                        <span class="text-xs text-gray-400 uppercase tracking-wider block">Adult (18–65 yrs)</span>
+                        <span class="font-cinzel text-xl font-bold text-amber-400">£20</span>
+                        <span class="block text-xs text-gray-400 mt-1">Annual Fee</span>
+                    </div>
+                    <div class="bg-navy-dark border border-navy-border p-4 rounded-xl text-center">
+                        <span class="text-xs text-gray-400 uppercase tracking-wider block">Concession (65+ yrs)</span>
+                        <span class="font-cinzel text-xl font-bold text-amber-400">£15</span>
+                        <span class="block text-xs text-gray-400 mt-1">Annual Fee</span>
+                    </div>
+                    <div class="bg-navy-dark border border-navy-border p-4 rounded-xl text-center">
+                        <span class="text-xs text-gray-400 uppercase tracking-wider block">Junior (Under 18 yrs)</span>
+                        <span class="font-cinzel text-xl font-bold text-amber-400">£10</span>
+                        <span class="block text-xs text-gray-400 mt-1">Annual Fee</span>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <form id="membership-form" onsubmit="handleRegistration(event)" class="space-y-6 max-w-xl mx-auto">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-gray-300 mb-1 font-medium">Full Name *</label>
+                            <input type="text" id="reg-name" required class="w-full bg-navy-dark border border-navy-border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition" placeholder="e.g. Sgt. Georgia Sansby">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-gray-300 mb-1 font-medium">Email Address *</label>
+                            <input type="email" id="reg-email" required class="w-full bg-navy-dark border border-navy-border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition" placeholder="georgia@bcpd.org.uk">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-gray-300 mb-1 font-medium">Date of Birth *</label>
+                            <input type="date" id="reg-dob" required onchange="calculateFee()" class="w-full bg-navy-dark border border-navy-border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-gray-300 mb-1 font-medium">Band Role / Instrument *</label>
+                            <select id="reg-role" required class="w-full bg-navy-dark border border-navy-border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition">
+                                <option value="Pipe Major">Pipe Major</option>
+                                <option value="Drum Sergeant">Drum Sergeant</option>
+                                <option value="Drum Major">Drum Major</option>
+                                <option value="Piper">Piper</option>
+                                <option value="Side Drummer">Side Drummer</option>
+                                <option value="Bass Drummer">Bass Drummer</option>
+                                <option value="Tenor Drummer">Tenor Drummer</option>
+                                <option value="Highland Dancer">Highland Dancer</option>
+                                <option value="Supporter / Hangars">Supporter / Hangars</option>
+                                <option value="Band Member">Band Member</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Fee calculation box -->
+                    <div id="fee-calc-box" class="bg-navy-dark border border-navy-border p-4 rounded-xl flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-gray-400 uppercase tracking-wider block">Calculated Category & Fee</span>
+                            <span id="calc-category-text" class="font-semibold text-white text-sm">Please select Date of Birth</span>
+                        </div>
+                        <div class="text-right">
+                            <span id="calc-fee-amount" class="font-cinzel text-2xl font-bold text-amber-400">£0</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-[#070b12] font-bold rounded-xl shadow-lg transition cursor-pointer tracking-wide text-sm uppercase">
+                        Proceed to Payment & Generate Pass
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- TAB 2: MY CARD / LOOKUP -->
+        <section id="tab-lookup" class="space-y-6 hidden">
+            <div class="bg-navy-card border border-navy-border rounded-2xl p-6 sm:p-8 shadow-xl max-w-xl mx-auto">
+                <div class="text-center mb-6">
+                    <h2 class="font-cinzel text-2xl font-bold mb-2 gold-text">Retrieve Membership Pass</h2>
+                    <p class="text-sm text-gray-300">Enter your registered email address or Membership ID to view your digital pass and QR code.</p>
+                </div>
+                <div class="flex gap-2 mb-6">
+                    <input type="text" id="lookup-query" class="flex-grow bg-navy-dark border border-navy-border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition" placeholder="e.g. BCPD-2026-1001 or email">
+                    <button onclick="lookupMember()" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm rounded-lg transition cursor-pointer shadow">Find Pass</button>
+                </div>
+                <div id="lookup-result" class="space-y-4"></div>
+            </div>
+        </section>
+
+        <!-- TAB 3: ADMIN PORTAL -->
+        <section id="tab-admin" class="space-y-6 hidden">
+            <div class="bg-navy-card border border-navy-border rounded-2xl p-6 sm:p-8 shadow-xl">
+                <div class="flex flex-wrap justify-between items-center mb-6 pb-4 border-b border-navy-border gap-4">
+                    <div>
+                        <h2 class="font-cinzel text-2xl font-bold gold-text">Admin Management Portal</h2>
+                        <p class="text-xs text-gray-400">Logged in as Administrator: <span class="text-amber-400 font-semibold">Gary Sansby (members@bcpd.org.uk)</span></p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="openAddMemberModal()" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded-lg transition cursor-pointer shadow">+ Add Member</button>
+                        <button onclick="exportCSV()" class="px-4 py-2 bg-navy-dark border border-navy-border hover:border-amber-500/50 text-xs font-semibold rounded-lg transition cursor-pointer">Export CSV</button>
+                        <button onclick="resetDemoData()" class="px-4 py-2 bg-red-950/40 border border-red-900/50 hover:bg-red-900/40 text-red-300 text-xs font-semibold rounded-lg transition cursor-pointer">Reset Data</button>
+                    </div>
+                </div>
+
+                <!-- Admin Stats Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-navy-dark border border-navy-border p-4 rounded-xl">
+                        <span class="text-xs text-gray-400 uppercase tracking-wider block">Total Members</span>
+                        <span id="stat-total" class="font-cinzel text-2xl font-bold text-amber-400">0</span>
+                    </div>
+                    <div class="bg-navy-dark border border-navy-border p-4 rounded-xl">
+                        <span class="text-xs text-gray-400 uppercase tracking-wider block">Total Revenue Collected</span>
+                        <span id="stat-revenue" class="font-cinzel text-2xl font-bold text-amber-400">£0</span>
+                    </div>
+                    <div class="bg-navy-dark border border-navy-border p-4 rounded-xl">
+                        <span class="text-xs text-gray-400 uppercase tracking-wider block">Category Breakdown</span>
+                        <div id="stat-breakdown" class="text-xs text-gray-300 mt-1 space-y-0.5"></div>
+                    </div>
+                </div>
+
+                <!-- Members Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-gray-300">
+                        <thead class="bg-navy-dark text-xs uppercase tracking-wider text-amber-400 border-b border-navy-border font-cinzel">
+                            <tr>
+                                <th class="p-3">ID</th>
+                                <th class="p-3">Name</th>
+                                <th class="p-3">Role</th>
+                                <th class="p-3">Category</th>
+                                <th class="p-3">Fee</th>
+                                <th class="p-3">Expiry</th>
+                                <th class="p-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-member-list" class="divide-y divide-navy-border"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-navy-dark border-t border-navy-border py-6 text-center text-xs text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 space-y-1">
+            <p>&copy; 2026 Bomber County Pipes & Drums. All rights reserved.</p>
+            <p>Rehearsals: Baston Village Hall, PE6 9PA | Contact: <a href="mailto:members@bcpd.org.uk" class="text-amber-400 hover:underline">members@bcpd.org.uk</a></p>
+        </div>
+    </footer>
+
+    <!-- Digital Card Modal View -->
+    <div id="card-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-navy-card border border-navy-border rounded-2xl max-w-md w-full p-6 shadow-2xl relative space-y-6">
+            <button onclick="closeCardModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl font-bold cursor-pointer">&times;</button>
+            <div class="text-center">
+                <h3 class="font-cinzel text-xl font-bold gold-text">Digital Membership Pass</h3>
+                <p class="text-xs text-gray-400">Screenshot or download your kilt flash pass for band events.</p>
+            </div>
+            <div id="modal-card-render" class="w-full flex justify-center"></div>
+            <div class="flex gap-3">
+                <button onclick="downloadCardImage()" class="flex-grow py-3 bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm rounded-xl transition cursor-pointer shadow">Download Card (PNG)</button>
+                <button onclick="closeCardModal()" class="px-5 py-3 bg-navy-dark border border-navy-border hover:bg-navy-dark/80 text-gray-300 font-semibold text-sm rounded-xl transition cursor-pointer">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Add Member Modal -->
+    <div id="add-member-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-navy-card border border-navy-border rounded-2xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
+            <button onclick="closeAddMemberModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl font-bold cursor-pointer">&times;</button>
+            <h3 class="font-cinzel text-xl font-bold gold-text">Add New Member</h3>
+            <form onsubmit="handleAdminAddMember(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-gray-300 mb-1">Full Name</label>
+                    <input type="text" id="admin-add-name" required class="w-full bg-navy-dark border border-navy-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-gray-300 mb-1">Email</label>
+                    <input type="email" id="admin-add-email" required class="w-full bg-navy-dark border border-navy-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-gray-300 mb-1">Date of Birth</label>
+                    <input type="date" id="admin-add-dob" required class="w-full bg-navy-dark border border-navy-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-gray-300 mb-1">Role</label>
+                    <select id="admin-add-role" class="w-full bg-navy-dark border border-navy-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+                        <option value="Pipe Major">Pipe Major</option>
+                        <option value="Drum Sergeant">Drum Sergeant</option>
+                        <option value="Drum Major">Drum Major</option>
+                        <option value="Piper">Piper</option>
+                        <option value="Side Drummer">Side Drummer</option>
+                        <option value="Bass Drummer">Bass Drummer</option>
+                        <option value="Tenor Drummer">Tenor Drummer</option>
+                        <option value="Highland Dancer">Highland Dancer</option>
+                        <option value="Supporter / Hangars">Supporter / Hangars</option>
+                        <option value="Band Member">Band Member</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full py-3 bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm rounded-xl transition cursor-pointer shadow">Save & Issue Pass</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Edit Member Modal -->
+    <div id="edit-member-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-navy-card border border-navy-border rounded-2xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
+            <button onclick="closeEditMemberModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl font-bold cursor-pointer">&times;</button>
+            <h3 class="font-cinzel text-xl font-bold gold-text">Edit Member</h3>
+            <form onsubmit="handleAdminEditMember(event)" class="space-y-4">
+                <input type="hidden" id="admin-edit-id">
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-gray-300 mb-1">Full Name</label>
+                    <input type="text" id="admin-edit-name" required class="w-full bg-navy-dark border border-navy-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-gray-300 mb-1">Email</label>
+                    <input type="email" id="admin-edit-email" required class="w-full bg-navy-dark border border-navy-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-gray-300 mb-1">Date of Birth</label>
+                    <input type="date" id="admin-edit-dob" required class="w-full bg-navy-dark border border-navy-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-gray-300 mb-1">Role</label>
+                    <select id="admin-edit-role" class="w-full bg-navy-dark border border-navy-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+                        <option value="Pipe Major">Pipe Major</option>
+                        <option value="Drum Sergeant">Drum Sergeant</option>
+                        <option value="Drum Major">Drum Major</option>
+                        <option value="Piper">Piper</option>
+                        <option value="Side Drummer">Side Drummer</option>
+                        <option value="Bass Drummer">Bass Drummer</option>
+                        <option value="Tenor Drummer">Tenor Drummer</option>
+                        <option value="Highland Dancer">Highland Dancer</option>
+                        <option value="Supporter / Hangars">Supporter / Hangars</option>
+                        <option value="Band Member">Band Member</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full py-3 bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm rounded-xl transition cursor-pointer shadow">Update Member Profile</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        const defaultMembers = [
+            { id: "BCPD-2026-1001", name: "Cameron Brownlie", email: "pipe-major@bcpd.org.uk", dob: "1975-06-12", role: "Pipe Major", category: "Adult", fee: 20, expiry: "22/01/2027", joined: "2026-01-15" },
+            { id: "BCPD-2026-1002", name: "Georgia Sansby", email: "georgia@bcpd.org.uk", dob: "2013-04-10", role: "Drum Sergeant", category: "Junior", fee: 10, expiry: "22/01/2027", joined: "2026-01-18" },
+            { id: "BCPD-2026-1003", name: "Gary Sansby", email: "members@bcpd.org.uk", dob: "1970-09-20", role: "Drum Major", category: "Adult", fee: 20, expiry: "22/01/2027", joined: "2026-01-10" },
+            { id: "BCPD-2026-1004", name: "Paul Pearson", email: "chairman@bcpd.org.uk", dob: "1962-11-05", role: "Band Member", category: "Concession", fee: 15, expiry: "22/01/2027", joined: "2026-01-10" }
+        ];
+
+        let members = JSON.parse(localStorage.getItem('bcpd_members')) || defaultMembers;
+
+        function saveMembers() {
+            localStorage.setItem('bcpd_members', JSON.stringify(members));
+            updateAdminStats();
+            renderAdminTable();
+        }
+
+        function calculateAge(dobString) {
+            const dob = new Date(dobString);
+            const today = new Date('2026-11-03');
+            let age = today.getFullYear() - dob.getFullYear();
+            const m = today.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        window.calculateFee = function() {
+            const dob = document.getElementById('reg-dob').value;
+            if(!dob) return;
+            const age = calculateAge(dob);
+            let category, fee;
+            if(age < 18) {
+                category = "Junior (Under 18 yrs)";
+                fee = 10;
+            } else if(age >= 65) {
+                category = "Concession (65+ yrs)";
+                fee = 15;
+            } else {
+                category = "Adult (18–65 yrs)";
+                fee = 20;
+            }
+            document.getElementById('calc-category-text').innerText = category;
+            document.getElementById('calc-fee-amount').innerText = '£' + fee;
+        };
+
+        window.switchTab = function(tabId) {
+            if(tabId === 'admin') {
+                const adminAuth = prompt("Admin Authentication Required:\nEnter Admin Email or Name:");
+                if(!adminAuth || (adminAuth.toLowerCase() !== 'members@bcpd.org.uk' && adminAuth.toLowerCase() !== 'gary sansby' && adminAuth.toLowerCase() !== 'gary')) {
+                    alert('Access Denied: Only Gary Sansby is authorized as Admin for Bomber County Pipes & Drums.');
+                    return;
+                }
+            }
+            ['register', 'lookup', 'admin'].forEach(t => {
+                const el = document.getElementById('tab-' + t);
+                const nav = document.getElementById('nav-' + t);
+                if(el) el.classList.add('hidden');
+                if(nav) {
+                    nav.classList.remove('bg-amber-600', 'text-white', 'border-amber-500');
+                    nav.classList.add('bg-navy-card', 'border-navy-border');
+                }
+            });
+            const targetTab = document.getElementById('tab-' + tabId);
+            const targetNav = document.getElementById('nav-' + tabId);
+            if(targetTab) targetTab.classList.remove('hidden');
+            if(targetNav) {
+                targetNav.classList.remove('bg-navy-card', 'border-navy-border');
+                targetNav.classList.add('bg-amber-600', 'text-white', 'border-amber-500');
+            }
+            if(tabId === 'admin') {
+                updateAdminStats();
+                renderAdminTable();
+            }
+        };
+
+        window.handleRegistration = function(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const dob = document.getElementById('reg-dob').value;
+            const role = document.getElementById('reg-role').value;
+
+            if(!name || !email || !dob) {
+                alert('Please fill out all required fields.');
+                return;
+            }
+
+            const age = calculateAge(dob);
+            let category, fee;
+            if(age < 18) { category = "Junior"; fee = 10; }
+            else if(age >= 65) { category = "Concession"; fee = 15; }
+            else { category = "Adult"; fee = 20; }
+
+            const newId = "BCPD-2026-" + Math.floor(1000 + Math.random() * 9000);
+            const newMember = {
+                id: newId,
+                name,
+                email,
+                dob,
+                role,
+                category,
+                fee,
+                expiry: "22/01/2027",
+                joined: new Date().toISOString().split('T')[0]
+            };
+
+            members.push(newMember);
+            saveMembers();
+
+            alert('Payment Successful! Membership card generated.');
+            document.getElementById('membership-form').reset();
+            document.getElementById('calc-category-text').innerText = 'Please select Date of Birth';
+            document.getElementById('calc-fee-amount').innerText = '£0';
+
+            showCardModal(newMember);
+        };
+
+        window.showCardModal = function(member) {
+            const container = document.getElementById('modal-card-render');
+            container.innerHTML = generateCardHTML(member);
+            document.getElementById('card-modal').classList.remove('hidden');
+            
+            // Render QR Code
+            setTimeout(() => {
+                const qrContainer = document.getElementById('qrcode-' + member.id);
+                if(qrContainer) {
+                    qrContainer.innerHTML = "";
+                    new QRCode(qrContainer, {
+                        text: `BCPD-PASS:${member.id}:${member.email}`,
+                        width: 72,
+                        height: 72,
+                        colorDark: "#070b12",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.M
+                    });
+                }
+            }, 100);
+        };
+
+        window.generateCardHTML = function(m) {
+            return `
+            <div id="digital-card-card" class="w-full bg-gradient-to-br from-[#0a111b] via-[#111c2e] to-[#1b2a4a] border-2 border-amber-500/60 rounded-2xl p-6 text-white shadow-2xl relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="flex justify-between items-start mb-4 border-b border-navy-border pb-3">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-9 h-9 rounded-full bg-amber-600 flex items-center justify-center font-cinzel font-bold text-sm text-white border border-amber-400">BC</div>
+                        <div>
+                            <h4 class="font-cinzel text-xs font-bold tracking-wider gold-text">Bomber County Pipes & Drums</h4>
+                            <p class="text-[10px] text-gray-400 tracking-wider uppercase">Official Member Pass</p>
+                        </div>
+                    </div>
+                    <span class="px-2 py-0.5 bg-amber-500/20 text-amber-300 text-[10px] font-semibold rounded-full border border-amber-500/30">${m.category}</span>
+                </div>
+                <div class="flex justify-between items-center my-4">
+                    <div class="space-y-1">
+                        <div>
+                            <span class="text-[10px] text-gray-400 uppercase tracking-wider block">Member Name</span>
+                            <span class="font-cinzel font-bold text-lg text-white">${m.name}</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-x-4 pt-1">
+                            <div>
+                                <span class="text-[10px] text-gray-400 uppercase tracking-wider block">Role</span>
+                                <span class="text-xs font-medium text-amber-200">${m.role}</span>
+                            </div>
+                            <div>
+                                <span class="text-[10px] text-gray-400 uppercase tracking-wider block">Member ID</span>
+                                <span class="text-xs font-mono text-gray-200">${m.id}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-1.5 rounded-xl shadow-md">
+                        <div id="qrcode-${m.id}" class="w-[72px] h-[72px]"></div>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center pt-3 border-t border-navy-border text-[11px] text-gray-400">
+                    <span>Valid Until: <strong class="text-amber-400">${m.expiry}</strong></span>
+                    <span class="font-mono text-emerald-400 font-semibold">&#10003; Active Paid</span>
+                </div>
+            </div>`;
+        };
+
+        window.closeCardModal = function() {
+            document.getElementById('card-modal').classList.add('hidden');
+        };
+
+        window.downloadCardImage = function() {
+            const cardElement = document.getElementById('digital-card-card');
+            if(!cardElement) return;
+            html2canvas(cardElement, { scale: 2, backgroundColor: null }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'BCPD_Membership_Pass.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        };
+
+        window.lookupMember = function() {
+            const query = document.getElementById('lookup-query').value.trim().toLowerCase();
+            const resultBox = document.getElementById('lookup-result');
+            if(!query) {
+                resultBox.innerHTML = '<p class="text-xs text-red-400 text-center">Please enter an email or Member ID.</p>';
+                return;
+            }
+
+            const found = members.find(m => m.id.toLowerCase() === query || m.email.toLowerCase() === query || m.name.toLowerCase().includes(query));
+            if(!found) {
+                resultBox.innerHTML = '<p class="text-xs text-red-400 text-center">No membership pass found matching that query. Please check details or register.</p>';
+                return;
+            }
+
+            resultBox.innerHTML = `
+                <div class="space-y-4">
+                    ${generateCardHTML(found)}
+                    <div class="text-center">
+                        <button onclick='showCardModal(${JSON.stringify(found)})' class="px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-xl transition cursor-pointer shadow">Open Full Digital Pass</button>
+                    </div>
+                </div>
+            `;
+
+            setTimeout(() => {
+                const qrContainer = document.getElementById('qrcode-' + found.id);
+                if(qrContainer) {
+                    qrContainer.innerHTML = "";
+                    new QRCode(qrContainer, {
+                        text: `BCPD-PASS:${found.id}:${found.email}`,
+                        width: 72,
+                        height: 72,
+                        colorDark: "#070b12",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.M
+                    });
+                }
+            }, 100);
+        };
+
+        window.updateAdminStats = function() {
+            const totalEl = document.getElementById('stat-total');
+            const revEl = document.getElementById('stat-revenue');
+            const breakdownEl = document.getElementById('stat-breakdown');
+            if(!totalEl) return;
+
+            totalEl.innerText = members.length;
+            const totalRev = members.reduce((sum, m) => sum + (Number(m.fee) || 0), 0);
+            revEl.innerText = '£' + totalRev;
+
+            const counts = { Adult: 0, Concession: 0, Junior: 0 };
+            members.forEach(m => {
+                if(counts[m.category] !== undefined) counts[m.category]++;
+                else counts.Adult++;
+            });
+
+            breakdownEl.innerHTML = `
+                <div>Adult (£20): <span class="text-amber-400 font-semibold">${counts.Adult}</span></div>
+                <div>Concession (£15): <span class="text-amber-400 font-semibold">${counts.Concession}</span></div>
+                <div>Junior (£10): <span class="text-amber-400 font-semibold">${counts.Junior}</span></div>
+            `;
+        };
+
+        window.renderAdminTable = function() {
+            const tbody = document.getElementById('admin-member-list');
+            if(!tbody) return;
+            
+            // Sort members alphabetically by surname (last word of name)
+            const sortedMembers = [...members].sort((a, b) => {
+                const surnameA = (a.name || '').trim().split(' ').pop().toLowerCase();
+                const surnameB = (b.name || '').trim().split(' ').pop().toLowerCase();
+                return surnameA.localeCompare(surnameB);
+            });
+
+            tbody.innerHTML = sortedMembers.map(m => `
+                <tr class="hover:bg-navy-dark/50 transition">
+                    <td class="p-3 font-mono text-xs text-amber-300">${m.id}</td>
+                    <td class="p-3 font-medium text-white">${m.name}<br><span class="text-[11px] text-gray-400 font-normal">${m.email}</span></td>
+                    <td class="p-3 text-xs">${m.role}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 bg-navy-dark text-gray-300 rounded text-[11px] border border-navy-border">${m.category}</span></td>
+                    <td class="p-3 font-semibold text-amber-400">£${m.fee}</td>
+                    <td class="p-3 text-xs text-gray-400">${m.expiry}</td>
+                    <td class="p-3 text-right space-x-2">
+                        <button onclick='openEditMemberModal("${m.id}")' class="px-2.5 py-1 bg-navy-dark hover:bg-navy-border text-amber-300 text-xs rounded transition cursor-pointer">Edit</button>
+                        <button onclick="deleteMember('${m.id}')" class="px-2.5 py-1 bg-red-950/40 hover:bg-red-900/40 text-red-300 text-xs rounded transition cursor-pointer">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        };
+
+        window.deleteMember = function(id) {
+            if(confirm('Are you sure you want to remove this member?')) {
+                members = members.filter(m => m.id !== id);
+                saveMembers();
+            }
+        };
+
+        window.openAddMemberModal = function() {
+            document.getElementById('add-member-modal').classList.remove('hidden');
+        };
+
+        window.closeAddMemberModal = function() {
+            document.getElementById('add-member-modal').classList.add('hidden');
+        };
+
+        window.handleAdminAddMember = function(e) {
+            e.preventDefault();
+            const name = document.getElementById('admin-add-name').value.trim();
+            const email = document.getElementById('admin-add-email').value.trim();
+            const dob = document.getElementById('admin-add-dob').value;
+            const role = document.getElementById('admin-add-role').value;
+
+            const age = calculateAge(dob);
+            let category, fee;
+            if(age < 18) { category = "Junior"; fee = 10; }
+            else if(age >= 65) { category = "Concession"; fee = 15; }
+            else { category = "Adult"; fee = 20; }
+
+            const newId = "BCPD-2026-" + Math.floor(1000 + Math.random() * 9000);
+            members.push({
+                id: newId, name, email, dob, role, category, fee, expiry: "22/01/2027", joined: new Date().toISOString().split('T')[0]
+            });
+            saveMembers();
+            closeAddMemberModal();
+            alert('Member added successfully!');
+        };
+
+        window.exportCSV = function() {
+            let csv = 'ID,Name,Email,DOB,Role,Category,Fee,Expiry,Joined\n';
+            members.forEach(m => {
+                csv += `"${m.id}","${m.name}","${m.email}","${m.dob}","${m.role}","${m.category}","${m.fee}","${m.expiry}","${m.joined}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'BCPD_Membership_Roster_2026.csv';
+            link.click();
+        };
+
+        window.resetDemoData = function() {
+            if(confirm('Reset roster to default demo members?')) {
+                members = [...defaultMembers];
+                saveMembers();
+                alert('Demo roster reset successfully.');
+            }
+        };
+
+        window.openEditMemberModal = function(id) {
+            const member = members.find(m => m.id === id);
+            if(!member) return;
+            document.getElementById('admin-edit-id').value = member.id;
+            document.getElementById('admin-edit-name').value = member.name;
+            document.getElementById('admin-edit-email').value = member.email;
+            document.getElementById('admin-edit-dob').value = member.dob;
+            document.getElementById('admin-edit-role').value = member.role;
+            document.getElementById('edit-member-modal').classList.remove('hidden');
+        };
+
+        window.closeEditMemberModal = function() {
+            document.getElementById('edit-member-modal').classList.add('hidden');
+        };
+
+        window.handleAdminEditMember = function(e) {
+            e.preventDefault();
+            const id = document.getElementById('admin-edit-id').value;
+            const name = document.getElementById('admin-edit-name').value;
+            const email = document.getElementById('admin-edit-email').value;
+            const dob = document.getElementById('admin-edit-dob').value;
+            const role = document.getElementById('admin-edit-role').value;
+
+            const age = calculateAge(dob);
+            let category, fee;
+            if(age < 18) { category = "Junior"; fee = 10; }
+            else if(age >= 65) { category = "Concession"; fee = 15; }
+            else { category = "Adult"; fee = 20; }
+
+            const index = members.findIndex(m => m.id === id);
+            if(index !== -1) {
+                members[index] = {
+                    ...members[index],
+                    name, email, dob, role, category, fee
+                };
+                saveMembers();
+                closeEditMemberModal();
+                alert('Member profile updated successfully!');
+            }
+        };
+    </script>
+</body>
+</html>
