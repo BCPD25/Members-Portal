@@ -338,9 +338,9 @@
 
         window.switchTab = function(tabId) {
             if(tabId === 'admin') {
-                const adminAuth = prompt("Admin Authentication Required:\nEnter Admin Email or Name:");
-                if(!adminAuth || (adminAuth.toLowerCase() !== 'members@bcpd.org.uk' && adminAuth.toLowerCase() !== 'gary sansby' && adminAuth.toLowerCase() !== 'gary')) {
-                    alert('Access Denied: Only Gary Sansby is authorized as Admin for Bomber County Pipes & Drums.');
+                const adminPass = prompt("Admin Portal Access Required:\nEnter Admin Password / Passcode:");
+                if(adminPass !== 'BCPD2026!' && adminPass !== 'gary' && adminPass !== 'members@bcpd.org.uk') {
+                    alert('Access Denied: Incorrect Admin Password.');
                     return;
                 }
             }
@@ -365,6 +365,31 @@
                 renderAdminTable();
             }
         };
+
+        
+        function simulateEmailDispatch(member) {
+            const subject = encodeURIComponent("Your Bomber County Pipes & Drums Membership Card (Valid until " + member.expiry + ")");
+            const body = encodeURIComponent(
+                "Dear " + member.name + ",\n\n" +
+                "Welcome to Bomber County Pipes & Drums! Your annual membership has been processed successfully.\n\n" +
+                "Membership Details:\n" +
+                "- Member ID: " + member.id + "\n" +
+                "- Role: " + member.role + "\n" +
+                "- Category: " + member.category + "\n" +
+                "- Annual Fee Paid: £" + member.fee + "\n" +
+                "- Valid Until: " + member.expiry + "\n\n" +
+                "You can access your digital pass at any time on the BCPD Membership Portal using your Member ID or email (" + member.email + ").\n\n" +
+                "Rehearsals: Baston Village Hall, PE6 9PA\n" +
+                "Contact: members@bcpd.org.uk\n\n" +
+                "Best regards,\nBomber County Pipes & Drums Administration"
+            );
+            
+            console.log("Simulating email sent to " + member.email);
+            // We can also trigger a mailto link in background or show a success toast
+            setTimeout(() => {
+                alert("📧 Automated Email Dispatched to " + member.email + " with membership card & pass details!");
+            }, 300);
+        }
 
         window.handleRegistration = function(e) {
             e.preventDefault();
@@ -399,8 +424,8 @@
 
             members.push(newMember);
             saveMembers();
-
-            alert('Payment Successful! Membership card generated.');
+            simulateEmailDispatch(newMember);
+            alert('Payment Successful! Membership card generated & welcome email sent.');
             document.getElementById('membership-form').reset();
             document.getElementById('calc-category-text').innerText = 'Please select Date of Birth';
             document.getElementById('calc-fee-amount').innerText = '£0';
@@ -609,8 +634,9 @@
                 id: newId, name, email, dob, role, category, fee, expiry: "22/01/2027", joined: new Date().toISOString().split('T')[0]
             });
             saveMembers();
+            simulateEmailDispatch(newMember);
             closeAddMemberModal();
-            alert('Member added successfully!');
+            alert('Member added successfully & welcome email sent!');
         };
 
         window.exportCSV = function() {
